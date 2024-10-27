@@ -13,11 +13,5 @@ pipeline {
                 sh 'sleep 3'
             }
         }
-         stage('Deploy') {
-            steps {
-                echo 'Deployment in progress.'
-                sh 'sleep 7'
-            }
-        }
     }
 }
