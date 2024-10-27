@@ -1,25 +1,54 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
         stage('Build') {
             steps {
-                echo 'Building started.'
-                sh 'sleep 5'
+                script {
+                    // Different build steps based on the branch name
+                    if (env.BRANCH_NAME == 'main') {
+                        sh 'sleep 7'
+                        echo 'Building for production...'
+                        // Add production build steps here
+                    } else {
+                        sh 'sleep 3'
+                        echo "Building for branch: ${env.BRANCH_NAME}"
+                        // Add branch-specific build steps here
+                    }
+                }
             }
         }
+        
         stage('Test') {
             steps {
-                echo 'Testing Started'
-                sh 'sleep 3'
+                script {
+                    if (env.BRANCH_NAME == 'dev' || env.BRANCH_NAME.startsWith('feature/')) {
+                        sh 'sleep 3'
+                        echo 'Running tests...'
+                        // Add test steps here
+                    }
+                }
             }
         }
+        
         stage('Deploy') {
-            when {
-                branch 'main'  // Only run Deploy stage on the main branch
-            }
             steps {
-                echo 'Deployment in progress.'
-                sh 'sleep 7'
+                script {
+                    if (env.BRANCH_NAME == 'dev') {
+                        sh 'sleep 3'
+                        echo 'Deploying to staging...'
+                        // Add staging deployment steps here
+                    } else if (env.BRANCH_NAME == 'main') {
+                        sh 'sleep 7'
+                        echo 'Deploying to production...'
+                        // Add production deployment steps here
+                    }
+                }
             }
         }
     }
