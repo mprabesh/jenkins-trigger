@@ -8,6 +8,9 @@ pipeline {
         }
         
         stage('Build') {
+            when {
+                expression { env.BRANCH_NAME != 'main' }
+            }
             steps {
                 echo "Building ${env.BRANCH_NAME} branch"
                 sh "sleep 2"
@@ -15,6 +18,12 @@ pipeline {
         }
         
         stage('Test') {
+            when {
+                anyOf {
+                    branch 'develop'
+                    branch pattern: "feature/.*", comparator: "REGEXP"
+                }
+            }
             steps {
                 echo "Testing ${env.BRANCH_NAME} branch"
                 // Add test steps here
