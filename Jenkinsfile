@@ -36,7 +36,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo "Deploying main branch"
+                echo "Deploying main branch exe"
                 sh "sleep 3"
             }
         }
