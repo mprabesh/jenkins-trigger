@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building ${env.BRANCH_NAME} branch"
-                sh "sleep 2"
+                sh "sleep 1"
             }
         }
         
